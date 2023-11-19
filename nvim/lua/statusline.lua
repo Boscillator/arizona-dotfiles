@@ -87,7 +87,13 @@ local function lsp()
     info = "  " .. count["info"]
   end
 
-  return "" .. errors .. warnings .. hints .. info .. ""
+  local status = errors .. warnings .. hints .. info
+  if status ~= "" then
+    return "" .. status .. ""
+  else
+    return ""
+  end
+
 end
 
 local function filetype()
