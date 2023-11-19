@@ -11,34 +11,6 @@ local function icon()
   return " " .. icon .. " "
 end
 
-local modes = {
-  ["n"] = "NORMAL",
-  ["no"] = "NORMAL",
-  ["v"] = "VISUAL",
-  ["V"] = "VISUAL LINE",
-  ["␖"] = "VISUAL BLOCK",
-  ["s"] = "SELECT",
-  ["S"] = "SELECT LINE",
-  ["␓"] = "SELECT BLOCK",
-  ["i"] = "INSERT",
-  ["ic"] = "INSERT",
-  ["R"] = "REPLACE",
-  ["Rv"] = "VISUAL REPLACE",
-  ["c"] = "COMMAND",
-  ["cv"] = "VIM EX",
-  ["ce"] = "EX",
-  ["r"] = "PROMPT",
-  ["rm"] = "MOAR",
-  ["r?"] = "CONFIRM",
-  ["!"] = "SHELL",
-  ["t"] = "TERMINAL",
-}
-
-local function mode()
-  local current_mode = vim.api.nvim_get_mode().mode
-  return string.format(" %s ", modes[current_mode]):upper()
-end
-
 local function filepath()
   local fpath = vim.fn.fnamemodify(vim.fn.expand "%", ":~:.:h")
   if fpath == "" or fpath == "." then
@@ -53,7 +25,7 @@ local function filename()
   if fname == "" then
     return ""
   end
-  return fname .. " "
+  return fname .. "  "
 end
 
 local function lsp()
@@ -75,21 +47,21 @@ local function lsp()
   local info = ""
 
   if count["errors"] ~= 0 then
-    errors = "  " .. count["errors"]
+    errors = " " .. count["errors"] .. " "
   end
   if count["warnings"] ~= 0 then
-    warnings = "  " .. count["warnings"]
+    warnings = " " .. count["warnings"] .. " "
   end
   if count["hints"] ~= 0 then
-    hints = "  " .. count["hints"]
+    hints = " " .. count["hints"] .. " "
   end
   if count["info"] ~= 0 then
-    info = "  " .. count["info"]
+    info = " " .. count["info"] .. " "
   end
 
   local status = errors .. warnings .. hints .. info
   if status ~= "" then
-    return "" .. status .. ""
+    return status .. " "
   else
     return ""
   end
@@ -107,6 +79,21 @@ local function lineinfo()
   return " %l:%c "
 end
 
+local function vcs()
+  local git_info = vim.b.gitsigns_status_dict
+  if not git_info or git_info.head == "" then 
+    return ""
+  end
+
+  local change_icon = ""
+  local lines_changed = git_info.added + git_info.removed + git_info.changed
+  if lines_changed ~= 0 then
+    change_icon = "  "
+  end
+
+  return "" .. git_info.head .. change_icon .. "  "
+end
+
 Statusline = {}
 
 Statusline.active = function()
@@ -115,6 +102,7 @@ Statusline.active = function()
     icon(),
     filepath(),
     filename(),
+    vcs(),
     lsp(),
     "%=",
     filetype(),
