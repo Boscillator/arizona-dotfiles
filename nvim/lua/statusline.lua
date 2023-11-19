@@ -112,8 +112,6 @@ Statusline = {}
 Statusline.active = function()
   return table.concat {
     "%#Statusline#",
-    -- mode(),
-    -- "%#Normal#",
     icon(),
     filepath(),
     filename(),
