@@ -5,7 +5,9 @@ return {
   lazy = true,
   keys = {
     '<leader><leader>',
-    '<leader>ff'
+    '<leader>ff',
+    '<leader>fg',
+    '<leader>fb'
   },
   config = function()
     local builtin = require('telescope.builtin')
@@ -23,5 +25,7 @@ return {
 
     vim.keymap.set('n', '<leader><leader>', project_files, {})
     vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
+    vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
+    vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
   end
 }
