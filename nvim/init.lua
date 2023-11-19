@@ -14,6 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 
 require("lazy").setup("plugins")
+require("statusline")
 
 -- Identation
 vim.o.expandtab = true

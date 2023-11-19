@@ -7,7 +7,11 @@ return {
     '<leader><leader>',
     '<leader>ff',
     '<leader>fg',
-    '<leader>fb'
+    '<leader>fb',
+    '<leader>fs',
+    '<leader>fS',
+    '<leader>fr',
+    '<leader>fd'
   },
   config = function()
     local builtin = require('telescope.builtin')
@@ -15,7 +19,7 @@ return {
 
     -- Find git files if in git repo
     local project_files = function()
-      local _, ref, _ = utils.get_os_command_output({'git', 'rev-parse', '--is-inside-work-tree'})
+      local _, ret, _ = utils.get_os_command_output({'git', 'rev-parse', '--is-inside-work-tree'})
       if ret == 0 then
         builtin.git_files()
       else
@@ -27,5 +31,9 @@ return {
     vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
     vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
     vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
+    vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, {})
+    vim.keymap.set('n', '<leader>fS', builtin.lsp_workspace_symbols, {})
+    vim.keymap.set('n', '<leader>fr', builtin.lsp_references, {})
+    vim.keymap.set('n', '<leader>fd', builtin.lsp_definitions, {})
   end
 }
